@@ -81,7 +81,7 @@ userRouter.post("/users/login", async (req, res) => {
 });
 
 
-userRouter.use(AuthValidator);
+// userRouter.use(AuthValidator);
 
 userRouter.get("/analytics/users", async (req, res) => {
     try {
