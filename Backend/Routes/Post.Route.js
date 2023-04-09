@@ -1,20 +1,12 @@
-const { UserModel } = require("../Models/UserModel");
+const { PostModel } = require("../Models/PostModal");
+const express = require("express");
+const postRouter = express.Router();
+const jwt = require("jsonwebtoken");
 
-const express = require(express);
-const userRouter = express.Router();
-
-// POST /posts: Create a new post. The request should include the user_id.
-// GET /posts/{id}: Retrieve a post by id.
-// PUT /posts/{id}: Update a post's content by id.
-// DELETE /posts/{id}: Delete a post by id.
-// POST /posts/{id}/like: Increment the like count of a post by id.
-// POST /posts/{id}/unlike: Decrement the like count of a post by id. The count should not go below 0.
-
-
-userRouter.get("/", async (req,res) => {
+postRouter.get("/", async (req, res) => {
     try {
-        let data = await UserModel.find();
-        res.send(cartdata);
+        let data = await PostModel.find();
+        res.send(data);
     }
     catch (err) {
         console.log(err);
@@ -23,73 +15,72 @@ userRouter.get("/", async (req,res) => {
 });
 
 
-userRouter.delete("/:id", async (req, res) => {
+postRouter.delete("/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        await CartModel.findByIdAndDelete({ "_id": id });
-        res.send({ Message: "User Deleted!" });
-    } catch (error) {
+        await PostModel.findByIdAndDelete({ "_id": id });
+        res.send({ Message: "Post Deleted Successfully!" });
+    }
+    catch (error) {
         console.log(err);
-        res.send({ Message: "Can not delete posts!" });
+        res.send({ Message: "Can not delete post!" });
     }
 });
 
 
-userRouter.put("/:id", async (req, res) => {
-    const payload = req.body;
+postRouter.put("/:id", async (req, res) => {
+
     const id = req.params.id;
+    const { user_id, content, created_at, likes } = req.body;
 
     try {
-        await CartModel.findByIdAndUpdate({ "_id": id }, payload);
-        res.send({ Message: "User Updated!" });
+        await PostModel.findByIdAndUpdate({ "_id": id }, { user_id, content, created_at, likes, updated_at: new Date() });
+        res.send({ Message: "Post Updated!" });
     }
     catch (error) {
         console.log(err);
-        res.send({ Message: "Can not update user info!" });
+        res.send({ Message: "Can not update post!" });
     }
 });
 
 
 // get by ID
-userRouter.get("/:id", async (req, res) => {
+postRouter.get("/:id", async (req, res) => {
     let id = req.params.id;
     try {
-        const cartItem = await CartModel.findById({ "_id": id });
-        res.send(cartItem);
+        const postById = await PostModel.findById({ "_id": id });
+        res.send(postById);
     }
     catch (err) {
         console.log(err);
-        res.send({ Message: "Can't find product item by given id!" });
+        res.send({ Message: "Can't find post by given id!" });
     }
 });
 
 
-userRouter.post("/:id/like", async (req, res) => {
-    const payload = req.body;
+postRouter.post("/", async (req, res) => {
+
+    const { content } = req.body;
+    const token = req.headers.authorization;
+    const decoded = jwt.verify(token, process.env.key);
+    console.log("decoded", decoded);
+
     try {
-      const data = new UserModel(payload);
-      await data.save();
-      res.send({ Message: "User added successfully!" });
-      console.log(data);
-    } 
+        if (decoded) {
+            const data = new PostModel({ user_id: decoded.userID, content, created_at: new Date(), likes: 0 });
+            await data.save();
+            console.log(data);
+            res.send({ Message: "Post posted successfully!" });
+        }
+        else {
+            res.send({ Message: "Something went wrong!" });
+        }
+    }
     catch (err) {
-      console.log(err);
-      res.send({ Message: "User can not be added!" });
+        console.log(err);
+        res.send({ Message: "Post posting filed!" });
     }
 });
 
 
-userRouter.post("/:id/unlike", async (req, res) => {
-    const payload = req.body;
-    try {
-      const data = new UserModel(payload);
-      await data.save();
-      res.send({ Message: "User added successfully!" });
-      console.log(data);
-    } 
-    catch (err) {
-      console.log(err);
-      res.send({ Message: "User can not be added!" });
-    }
-});
-  
+module.exports = { postRouter };
