@@ -28,7 +28,7 @@ const PostCard = ({ data, id }) => {
         />
         <div className="flex gap-4">
           <p className="text-sm font-bold bg-black">{data.name}</p>
-          <p className="text-sm">{data.desc}</p>
+          <p className="text-sm">{data.content}</p>
         </div>
       </div>
       <div className="flex gap-6">

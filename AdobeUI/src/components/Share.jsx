@@ -14,7 +14,7 @@ const Share = () => {
   const imgeref = useRef();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.authReducer.authData);
-  const desc = useRef();
+  const content = useRef();
 
   const onImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -25,15 +25,18 @@ const Share = () => {
 
   const reset = ()=>{
     setImg(null)
-    desc.current.value="";
+    content.current.value="";
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const newPost = {
-      userId: user._id,
-      desc: desc.current.value,
+      user_id: user._id,
+      content: content.current.value,
     };
+    console.log(newPost);
+
     if (imge) {
       const data = new FormData();
       const filename = Date.now() + imge.name;
@@ -57,7 +60,7 @@ const Share = () => {
       <div className="img flex gap-4 py-2 w-full flex items-center">
         <img className="w-12 rounded-full" src={user.profileImage?uurl+user.profileImage : uurl+"def.jpg"} alt="" />
         <input
-          ref={desc}
+          ref={content}
           required
           className="w-full h-12"
           type="text"
