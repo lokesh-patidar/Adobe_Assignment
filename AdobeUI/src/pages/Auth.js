@@ -7,33 +7,29 @@ const Auth = () => {
   const loading = useSelector((state) => state.authReducer.loading);
 
   const initialState = {
-    firstname: "",
-    lastname: "",
-    username: "",
+    name: "",
+    email: "",
+    bio: "",
     password: "",
     confirmpass: "",
   };
 
   const [isSignUp, setIsSignUp] = useState(true);
   const [compPass, setCompPass] = useState(true);
-  const [data, setData] = useState({
-    firstname: "",
-    lastname: "",
-    username: "",
-    password: "",
-    confirmpass: "",
-  });
+  const [data, setData] = useState(initialState);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isSignUp) {
       data.password == data.confirmpass
         ? dispatch(signUp(data))
         : setCompPass(false);
-    } else {
+    } 
+    else {
       dispatch(logIn(data));
     }
   };
@@ -41,9 +37,9 @@ const Auth = () => {
   const resetForm = () => {
     setCompPass(true);
     setData({
-      firstname: "",
-      lastname: "",
-      username: "",
+      name: "",
+      email: "",
+      bio: "",
       password: "",
       confirmpass: "",
     });
@@ -62,33 +58,32 @@ const Auth = () => {
                 <input
                   required
                   type="text"
-                  placeholder="First Name"
+                  placeholder="Name"
                   className="infoInput bg-transparent outline-none px-4 py-2  border-b-2 border-black w-1/2"
-                  name="firstname"
+                  name="name"
                   onChange={handleChange}
-                  value={data.firstname}
+                  value={data.name}
                 />
                 <input
                   required
-                  type="text"
-                  placeholder="Last Name"
+                  type="email"
+                  placeholder="Email"
                   className="infoInput bg-transparent outline-none px-4 py-2  border-b-2 border-black w-1/2"
-                  name="lastname"
+                  name="email"
                   onChange={handleChange}
-                  value={data.lastname}
+                  value={data.email}
                 />
               </div>
             )}
 
             <div>
               <input
-                required
                 type="text"
-                placeholder="Username"
+                placeholder="User Bio"
                 className="infoInput bg-transparent outline-none px-4 py-2  border-b-2 border-black w-full"
-                name="username"
+                name="userbio"
+                value={data.bio}
                 onChange={handleChange}
-                value={data.username}
               />
             </div>
             <div className="flex gap-3">
