@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const ProfileCard = ({ location }) => {
   const { user } = useSelector((state) => state.authReducer.authData);
   const posts = useSelector((state) => state.postReducer.posts);
-  const uurl = `http://localhost:5000/images/`;
+  const uurl = `https://adobe-assignment-mwhv.vercel.app/images`;
 
   const profilePage = false;
   return (
@@ -35,15 +35,11 @@ const ProfileCard = ({ location }) => {
       <div className="px-6 relative bottom-12  ">
         <div className="flex justify-around items-center gap-8 border-t-2 border-b-2 border-black py-4">
           <div className="flex flex-col items-center justify-center">
-            <span className="text-lg font-semibold">
-              {user.followers.length} 
-            </span>
+            
             <span className="font-semibold text-sm">Followers</span>
           </div>
           <div className="flex flex-col items-center justify-center">
-            <span className="text-lg font-semibold">
-              {user.following.length}
-            </span>
+            
             <span className="font-semibold text-sm">Followings</span>
           </div>
           {location === "profilePage" && (

@@ -10,7 +10,7 @@ const PostCard = ({ data, id }) => {
   const { user } = useSelector((state) => state.authReducer.authData);
   const [liked, setLiked] = useState(data.likes.includes(user._id));
   const [likes, setLikes] = useState(data.likes.length);
-  const uurrll = `http://localhost:5000/images/`;
+  const uurrll = `https://adobe-assignment-mwhv.vercel.app/images`;
 
   const handleLike = () => {
     setLiked((prev) => !prev);

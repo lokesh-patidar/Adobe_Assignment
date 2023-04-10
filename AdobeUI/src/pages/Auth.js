@@ -77,14 +77,14 @@ const Auth = () => {
             )}
 
             <div>
-              <input
+              {/* <input
                 type="text"
                 placeholder="User Bio"
                 className="infoInput bg-transparent outline-none px-4 py-2  border-b-2 border-black w-full"
                 name="userbio"
-                value={data.bio}
                 onChange={handleChange}
-              />
+                value={data.bio}
+              /> */}
             </div>
             <div className="flex gap-3">
               <input
